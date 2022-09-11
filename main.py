@@ -16,6 +16,7 @@ class Game:
         self.character_spritesheet = Spritesheet('img/character.png')
         self.terrain_spritesheet = Spritesheet('img/terrain.png')
         self.enemy_spritesheet = Spritesheet('img/enemy.png')
+        self.attack_spritesheet = Spritesheet('img/attack2.png')
         self.intro_background = pygame.image.load('img/introbackground.png')
         self.go_background = pygame.image.load('img/gameover.png')
 
@@ -28,7 +29,7 @@ class Game:
                 if column == "E":
                     Enemy(self, j, i)
                 if column == "P":
-                    Player(self, j, i)
+                    self.player = Player(self, j, i)
 
     def new(self):
         # a new game starts
@@ -47,6 +48,21 @@ class Game:
             if event.type == pygame.QUIT:
                 self.playing = False
                 self.running = False
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    if self.player.facing == 'up':
+                        Attack(self, self.player.rect.x,
+                               self.player.rect.y - TILESIZE)
+                    if self.player.facing == 'down':
+                        Attack(self, self.player.rect.x,
+                               self.player.rect.y + TILESIZE)
+                    if self.player.facing == 'left':
+                        Attack(self, self.player.rect.x - TILESIZE,
+                               self.player.rect.y)
+                    if self.player.facing == 'right':
+                        Attack(self, self.player.rect.x + TILESIZE,
+                               self.player.rect.y)
 
     def update(self):
         # game loop updates
